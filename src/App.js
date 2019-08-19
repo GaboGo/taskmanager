@@ -93,10 +93,7 @@ class App extends Component {
             </div>
             <div className="card-footer">
               <button className="btn btn-danger mr-2" onClick={this.handleRemoveTask.bind(this,task.id)}>
-                 Delete
-              </button>
-              <button className="btn btn-info mr-2" onClick={this.handleRemoveTask.bind(this,task.id)}>
-                 Edit
+                 Done
               </button>
             </div>
           </div>  
