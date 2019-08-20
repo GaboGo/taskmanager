@@ -95,6 +95,9 @@ class App extends Component {
               <button className="btn btn-danger mr-2" onClick={this.handleRemoveTask.bind(this,task.id)}>
                  Done!
               </button>
+              <button className="btn btn-danger mr-2" onClick={this.handleRemoveTask.bind(this,task.id)}>
+                Edit
+              </button>
             </div>
           </div>  
         </div>
