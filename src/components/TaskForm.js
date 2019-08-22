@@ -11,7 +11,9 @@ class TaskForm extends Component {
         };
         this.handleInput = this.handleInput.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
+        this.handleEdit = this.handleEdit.bind(this);
         this.formValidation = this.formValidation.bind(this);
+        this.cancelEdit = this.cancelEdit.bind(this);
    }
 
    handleInput(e){
@@ -25,7 +27,7 @@ class TaskForm extends Component {
    formValidation(e){
       var inputs = e.target.querySelectorAll(".form-control");
       for (let index = 0; index < inputs.length; index++) {
-          if (inputs[index].value == "") {
+          if (inputs[index].value === "") {
               inputs[index].classList.add('error');
               return false
           }else{
@@ -44,16 +46,32 @@ class TaskForm extends Component {
        }else{
          const target = e.target;    
        }
-       
    }
-   
+
+   handleEdit(e){
+      e.preventDefault();
+      if(this.formValidation(e)){
+        this.props.onEditTask(this.state, true)
+        console.log("sending the data...")
+      }else{
+        const target = e.target;    
+      }
+  }
+
+   cancelEdit(){
+      this.props.onEditTask(this.state, false)
+   }
+
    render(){
+
+       let isEdit = this.props.editState;
        return (
           <div className="card">
-             <form className="card-body" onSubmit={this.handleSubmit}>
+             <form className="card-body" onSubmit={isEdit ? this.handleEdit : this.handleSubmit}>
                  <div className="form-group">
                     <input
                       type="text"
+                      value={isEdit ? this.props.currentTask.title : ""}
                       name="title"
                       onChange={this.handleInput}
                       className="form-control"
@@ -63,6 +81,7 @@ class TaskForm extends Component {
                  <div className="form-group">
                     <input
                       type="text"
+                      value={isEdit ? this.props.currentTask.responsible : ""}
                       name="responsible"
                       onChange={this.handleInput}
                       className="form-control"
@@ -72,6 +91,7 @@ class TaskForm extends Component {
                  <div className="form-group">
                     <input
                       type="text"
+                      value={isEdit ? this.props.currentTask.description : ""}
                       name="description"
                       onChange={this.handleInput}
                       className="form-control"
@@ -84,12 +104,19 @@ class TaskForm extends Component {
                       className="form-control"
                       onChange={this.handleInput}
                     >
-                    <option>low</option>
-                    <option>medium</option>
-                    <option>high</option>
+                    <option selected={(isEdit && this.props.currentTask.priority) === "low" ? true : false}>low</option>
+                    <option selected={(isEdit && this.props.currentTask.priority) === "medium" ? true : false}>medium</option>
+                    <option selected={(isEdit && this.props.currentTask.priority) === "high" ? true : false}>high</option>
                     </select>
                  </div>
-                 <button type="submit" className="btn btn-primary">Submit</button>
+                 {isEdit ? (
+                     <section id="editBtns">
+                        <button type="submit" className="btn btn-success mr-2">Edit</button>
+                        <button type="button" onClick={this.cancelEdit} className="btn btn-danger mr-2">Cancel</button>
+                     </section>
+                  ) : (
+                     <button type="submit" className="btn btn-primary">Submit</button> 
+                  )}
              </form>
           </div>
        )

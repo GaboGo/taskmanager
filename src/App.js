@@ -16,9 +16,12 @@ class App extends Component {
   constructor(){
     super();
     this.state = {
-      tasks: []
+      tasks: [],
+      editState: false,
+      currentTask: {}
     }
     this.handleAddTasks = this.handleAddTasks.bind(this);
+    this.editState = false;
     this.app = firebase.initializeApp(DB_CONFIG)
     this.db = this.app.database().ref().child('tasks')
   }
@@ -75,11 +78,20 @@ class App extends Component {
       this.db.child(id).remove();
     }
   }
+
+  handleEditTask(task, flag){
+    if(flag){
+      console.log(task);
+      this.setState({editState: true, currentTask: task});
+    } else {
+      this.setState({editState: false});
+    }
+  }
   
   render(){
-    const tasks = this.state.tasks.map((task) => {
+    const tasks = this.state.tasks.map((task,index) => {
       return (
-        <div className="col-md-4">
+        <div key={index} className="col-md-4">
           <div className="card mt-4">
             <div className="card-header">
               <h3>{task.title}</h3>
@@ -92,10 +104,10 @@ class App extends Component {
               <p><mark>{task.responsible}</mark></p>
             </div>
             <div className="card-footer">
-              <button className="btn btn-danger mr-2" onClick={this.handleRemoveTask.bind(this,task.id)}>
+              <button className="btn btn-success mr-2" onClick={this.handleRemoveTask.bind(this,task.id)}>
                  Done!
               </button>
-              <button className="btn btn-danger mr-2" onClick={this.handleRemoveTask.bind(this,task.id)}>
+              <button className="btn btn-info mr-2" onClick={this.handleEditTask.bind(this,task, true)}>
                 Edit
               </button>
             </div>
@@ -112,7 +124,7 @@ class App extends Component {
             <div className="row mt-4">
               <div className="col-md-3">
                 <img src={logo} className="App-logo" alt="logo" />
-                <TaskForm onAddTask={this.handleAddTasks}></TaskForm>
+                <TaskForm currentTask={this.state.currentTask} editState={this.state.editState} onEditTask={this.handleEditTask.bind(this)} onAddTask={this.handleAddTasks}></TaskForm>
               </div>
               <div className="col-md-9">
                 <div className="row">
