@@ -23,6 +23,10 @@
   color: #61dafb;
 }
 
+.hidden{
+  display: none;
+}
+
 .error{
   animation: Shake-input .1s linear;
   animation-iteration-count: 3;
