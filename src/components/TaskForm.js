@@ -4,6 +4,7 @@ class TaskForm extends Component {
    constructor(){
         super();
         this.state = {
+            id: '',
             title: '',
             responsible: '',
             description: '',
@@ -51,7 +52,9 @@ class TaskForm extends Component {
    handleEdit(e){
       e.preventDefault();
       if(this.formValidation(e)){
-        this.props.onEditTask(this.state, true)
+        this.state.priority = document.querySelector("[name='priority']").value;
+        this.props.onEditTask(this.state);
+        this.cancelEdit();
         console.log("sending the data...")
       }else{
         const target = e.target;    
@@ -59,43 +62,60 @@ class TaskForm extends Component {
   }
 
    cancelEdit(){
-      this.props.onEditTask(this.state, false)
+      this.props.onSwitchState(this.state, false);
+      this.clearForm();
+   }
+
+   clearForm(){
+      this.setState({
+         id: '',
+         title: '',
+         responsible: '',
+         description: '',
+         priority: 'low'
+     });
    }
 
    render(){
-
+       
        let isEdit = this.props.editState;
+       if(isEdit){
+          this.state = this.props.currentTask;
+       }       
        return (
           <div className="card">
              <form className="card-body" onSubmit={isEdit ? this.handleEdit : this.handleSubmit}>
                  <div className="form-group">
                     <input
                       type="text"
-                      value={isEdit ? this.props.currentTask.title : ""}
+                      value={this.state.title}
                       name="title"
                       onChange={this.handleInput}
                       className="form-control"
                       placeholder="Title"
+                      disabled={isEdit ? true : false}
                     />
                  </div>
                  <div className="form-group">
                     <input
                       type="text"
-                      value={isEdit ? this.props.currentTask.responsible : ""}
+                      value={this.state.responsible}
                       name="responsible"
                       onChange={this.handleInput}
                       className="form-control"
                       placeholder="Responsible"
+                      disabled={isEdit ? true : false}
                     />
                  </div>
                  <div className="form-group">
                     <input
                       type="text"
-                      value={isEdit ? this.props.currentTask.description : ""}
+                      value={this.state.description}
                       name="description"
                       onChange={this.handleInput}
                       className="form-control"
                       placeholder="Description"
+                      disabled={isEdit ? true : false}
                     />
                  </div>
                  <div className="form-group">
@@ -104,15 +124,15 @@ class TaskForm extends Component {
                       className="form-control"
                       onChange={this.handleInput}
                     >
-                    <option selected={(isEdit && this.props.currentTask.priority) === "low" ? true : false}>low</option>
-                    <option selected={(isEdit && this.props.currentTask.priority) === "medium" ? true : false}>medium</option>
-                    <option selected={(isEdit && this.props.currentTask.priority) === "high" ? true : false}>high</option>
+                     <option selected={(isEdit && this.state.priority) === "low" ? true : false}>low</option>
+                     <option selected={(isEdit && this.state.priority) === "medium" ? true : false}>medium</option>
+                     <option selected={(isEdit && this.state.priority) === "high" ? true : false}>high</option>
                     </select>
                  </div>
                  {isEdit ? (
                      <section id="editBtns">
-                        <button type="submit" className="btn btn-success mr-2">Edit</button>
-                        <button type="button" onClick={this.cancelEdit} className="btn btn-danger mr-2">Cancel</button>
+                        <button type="submit" className="btn btn-danger mr-2">Edit</button>
+                        <button type="button" onClick={this.cancelEdit} className="btn btn-info mr-2">Cancel</button>
                      </section>
                   ) : (
                      <button type="submit" className="btn btn-primary">Submit</button> 
