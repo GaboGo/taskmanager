@@ -117,7 +117,7 @@ class App extends Component {
               <p><mark>{task.responsible}</mark></p>
             </div>
             <div className="card-footer">
-              <button className="btn btn-success mr-2" onClick={this.handleRemoveTask.bind(this,task.id)}>
+              <button className="btn btn-danger mr-2" onClick={this.handleRemoveTask.bind(this,task.id)}>
                  Done!
               </button>
               <button className="btn btn-info mr-2" onClick={this.handleSwitchState.bind(this,task, true)}>
