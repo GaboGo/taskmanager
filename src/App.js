@@ -1,6 +1,4 @@
 import React, { Component } from 'react';
-//import request from 'superagent';
-//import { Tasks } from './tasks.json'
 import logo from './logo.svg';
 import './App.css';
 import Navigation from './components/Navigation';
@@ -61,27 +59,9 @@ class App extends Component {
       });
       this.setState({tasks})
     });
-    // getting tasks from json file using HTML5 fetch
-    // fetch('tasks.json')
-    // .then(res => res.json())
-    // .then((data) => {
-    //   this.setState({ tasks: data.tasks })
-    // })
-    // .catch(console.log)
- 
-    // getting tasks using superagent
-    // request
-    // .get('tasks.json')
-    // .end((err,res) => {
-    //   this.setState(JSON.parse(res.text));
-    // })
   }
 
   handleAddTasks(task){
-    // update state 
-    // this.setState({
-    //   tasks: [...this.state.tasks, task]
-    // })
     this.db.push().set({taskContent: task})
   }
 
