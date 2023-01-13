@@ -4,7 +4,7 @@
   "private": true,
   "engines": {
     "node": "8.11.4"
-  }
+  },
   "dependencies": {
     "firebase": "^6.2.3",
     "react": "^16.8.6",
